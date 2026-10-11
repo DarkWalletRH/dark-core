@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+      # foundry.toml has libs = ["node_modules", "lib"]: forge-std and OpenZeppelin come from npm.
+      - run: npm ci
+      - uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
+        with:
+          version: v1.5.1
+      - run: forge fmt --check src test
+      - run: forge build
+      - run: forge test
+      - name: lib/dark-contracts is a verbatim copy of the published release
+        run: bash script/verify-lib.sh
+      - name: the build is the code deployed on mainnet
+        run: python3 script/verify-mainnet.py

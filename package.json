@@ -1,0 +1,24 @@
+{
+  "name": "dark-core",
+  "private": true,
+  "version": "1.0.0",
+  "description": "The Dark vault: encrypted USDG balances on Robinhood Chain, moved only by zero-knowledge proofs.",
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarkWalletRH/dark-core.git"
+  },
+  "homepage": "https://darkwallet.cash",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "fmt:check": "forge fmt --check src test",
+    "verify:mainnet": "forge build && python3 script/verify-mainnet.py",
+    "verify:lib": "bash script/verify-lib.sh"
+  },
+  "devDependencies": {
+    "@noble/curves": "^2.4.0",
+    "@openzeppelin/contracts": "5.6.1",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.7"
+  }
+}
