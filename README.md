@@ -109,11 +109,11 @@ forge test      # unit, boundary, differential and invariant tests
 
 ## Security review
 
-An independent security review of [`src/DarkVaultCore.sol`](src/DarkVaultCore.sol), the code that
-holds the funds and moves every balance, is under way, and its report will be published in this
-repository. The review does not cover the owner and guardian functions in `src/DarkVault.sol`, the
-libraries in `lib/dark-contracts`, the proof verifiers or the Noir circuits; [AUDIT.md](AUDIT.md)
-sets out what the review assumes about each of them, and where to look hardest.
+[Shieldify](https://shieldify.org) completed an independent security review of the vault
+(`src/DarkVaultCore.sol` and `src/DarkVault.sol`) at commit `379bec5` in October 2026. It reported
+nine informational findings and nothing of Low severity or above; the report will be published
+here when final, and [AUDIT.md](AUDIT.md) lists each finding with our response. The review did not
+cover the libraries in `lib/dark-contracts`, the proof verifiers or the Noir circuits.
 
 Found a problem? Please report it privately to **team@darkwallet.cash**. See
 [SECURITY.md](SECURITY.md).

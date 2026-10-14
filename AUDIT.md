@@ -109,7 +109,29 @@ compiler settings are in `foundry.toml` (solc 0.8.28, `via_ir`, 1,000 optimizer 
     with no delay (within the ceilings, with no path to USDG). `setGuardian` takes any non-zero
     address. The guardian Safe (1-of-2) has two signers who are also two of the owner Safe's three.
 
-## 6. Build and test
+## 6. External review (Shieldify, October 2026)
+
+Shieldify reviewed `src/DarkVaultCore.sol` and `src/DarkVault.sol` (298 nSLOC) at commit
+`379bec5ef8256592b8248895243be97f93fabfd3` over three days and reported nine informational
+findings and nothing of Low severity or above. The report will be published in this repository
+when final. The findings, and what we do about them on the deployed, non-upgradeable vault:
+
+| ID | Finding | Response |
+|---|---|---|
+| I-01 | A `setCaps` scheduled before an incident can overwrite a later guardian tightening | Operating rule: when the guardian tightens caps, cancel every pending `setCaps` on the timelock, and pause alongside the tightening. Next version: a configuration version check and per-field guardian updates. |
+| I-02 | `minTransfer == maxTransfer` makes every transfer amount inferable | Operating rule: never set an enabled window to a single value (live window: 0.01 to 1,000 USDG). Next version: rejected on chain. |
+| I-03 | Hint confidentiality depends on the sender's ephemeral scalar | By design. The dark-sdk derives `k` from the sender's secret and the transfer context; a weak `k` exposes only the sender's own payment. NatSpec to be clarified. |
+| I-04 | `applyPending` with nothing pending still bumps the nonce | The dark-sdk refuses the call when `pendingCount == 0`, and the web wallet offers it only while payments are pending. Next version: early return. |
+| I-05 | `setGuardian` is single-step | Rotations go through the 48-hour timelock, with the new address confirmed on the explorer before scheduling. Next version: two-step rotation, `guardian != owner` in the constructor. |
+| I-06 | `recoverERC20` emits no event | Next version: `ERC20Recovered`. The call is owner-only behind the timelock and cannot touch USDG. |
+| I-07 | `deposit` rejects a token that credits more than `amount` | Next version: `received >= amount`. USDG credits the exact amount today. |
+| I-08 | `DarkGrumpkin.inv` fails silently without precompile 0x05 | Present on Robinhood Chain; added to the deployment checklist for any other chain. Next version: require non-empty returndata. |
+| I-09 | `verify-mainnet.py` does not cover the verifiers | The verifiers and their linked libraries are rebuilt and compared with the chain by `scripts/check-verifier-bytecode.mjs` in [dark-contracts](https://github.com/DarkWalletRH/dark-contracts), run by its CI. |
+
+Items marked "next version" are not applied to the deployed vault: changing its source would
+change the deployed code, and none of them affects the safety of funds.
+
+## 7. Build and test
 
 ```bash
 npm ci
@@ -120,6 +142,6 @@ bash script/verify-lib.sh
 python3 script/verify-mainnet.py
 ```
 
-## 7. Contact
+## 8. Contact
 
 team@darkwallet.cash. Please report anything security-relevant privately.
