@@ -111,8 +111,10 @@ forge test      # unit, boundary, differential and invariant tests
 
 [Shieldify](https://shieldify.org) completed an independent security review of the vault
 (`src/DarkVaultCore.sol` and `src/DarkVault.sol`) at commit `379bec5` in October 2026. It reported
-nine informational findings and nothing of Low severity or above; the report will be published
-here when final, and [AUDIT.md](AUDIT.md) lists each finding with our response. The review did not
+nine informational findings and nothing of Low severity or above. Read the
+[report](audits/2026-10-Shieldify-Security-Review.pdf) (also in
+[Shieldify's portfolio](https://github.com/shieldify-security/audits-portfolio/blob/main/reports/DarkWallet-Security-Review.pdf));
+[AUDIT.md](AUDIT.md) lists each finding with our response. The review did not
 cover the libraries in `lib/dark-contracts`, the proof verifiers or the Noir circuits.
 
 Found a problem? Please report it privately to **team@darkwallet.cash**. See

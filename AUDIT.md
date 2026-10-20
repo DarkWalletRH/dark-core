@@ -113,8 +113,10 @@ compiler settings are in `foundry.toml` (solc 0.8.28, `via_ir`, 1,000 optimizer 
 
 Shieldify reviewed `src/DarkVaultCore.sol` and `src/DarkVault.sol` (298 nSLOC) at commit
 `379bec5ef8256592b8248895243be97f93fabfd3` over three days and reported nine informational
-findings and nothing of Low severity or above. The report will be published in this repository
-when final. The findings, and what we do about them on the deployed, non-upgradeable vault:
+findings and nothing of Low severity or above: [the report](audits/2026-10-Shieldify-Security-Review.pdf)
+(also in [Shieldify's portfolio](https://github.com/shieldify-security/audits-portfolio/blob/main/reports/DarkWallet-Security-Review.pdf)).
+All nine are acknowledged. The findings, and what we do about them on the deployed,
+non-upgradeable vault:
 
 | ID | Finding | Response |
 |---|---|---|
